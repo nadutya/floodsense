@@ -59,6 +59,24 @@ npm.cmd run dev -- --host 127.0.0.1
 
 Open `http://localhost:5173`. The map tiles and web font require an internet connection; the application and scenario data otherwise run locally.
 
+### Run on a Linux server
+
+Start both processes on the same server (in separate terminals or services):
+
+```bash
+PYTHONPATH=backend .venv/bin/python -m uvicorn floodsense.api:app --host 127.0.0.1 --port 8000
+cd frontend
+npm run dev -- --host 0.0.0.0
+```
+
+Vite proxies `/api` to `http://127.0.0.1:8000` by default. Using the explicit IPv4 address avoids Node resolving `localhost` to `::1` while Uvicorn listens on IPv4 only. If the backend runs in another container or on another host, set its reachable address before starting Vite:
+
+```bash
+FLOODSENSE_API_TARGET=http://backend:8000 npm run dev -- --host 0.0.0.0
+```
+
+Do not expose Uvicorn separately when using the Vite proxy; only port `5173` needs to be reachable for this development setup.
+
 On Windows, verify first that `py -3.10 --version` reports Python 3.10.x. Do not use the bare `python` command if it resolves to MSYS/MinGW. If `.venv` was previously created by that Python, delete that broken `.venv` directory and recreate it with `py -3.10 -m venv .venv`.
 
 ## Verification
