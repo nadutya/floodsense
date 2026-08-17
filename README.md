@@ -77,6 +77,72 @@ FLOODSENSE_API_TARGET=http://backend:8000 npm run dev -- --host 0.0.0.0
 
 Do not expose Uvicorn separately when using the Vite proxy; only port `5173` needs to be reachable for this development setup.
 
+### Production deployment on port 80 with Nginx
+
+The repository includes a ready Nginx configuration at `deploy/nginx/floodsense.conf`. It serves the production frontend directly and forwards `/api` requests to FastAPI. Vite does not run in this setup.
+
+The supplied configuration expects the project at `/var/www/floodsense`. Copy or clone it there, then run from the project directory:
+
+```bash
+cd /var/www/floodsense
+
+python3 -m venv .venv
+.venv/bin/python -m pip install -r backend/requirements.txt
+
+cd frontend
+npm install
+npm run build
+cd ..
+```
+
+Test the backend before configuring Nginx:
+
+```bash
+cd /var/www/floodsense
+PYTHONPATH=backend .venv/bin/python -m uvicorn floodsense.api:app --host 127.0.0.1 --port 8000
+```
+
+In another terminal, check that `curl http://127.0.0.1:8000/api/health` returns `{"status":"ok"}`, then stop this test process with `Ctrl+C`.
+
+Install and enable the Nginx configuration:
+
+```bash
+sudo apt update
+sudo apt install -y nginx
+sudo cp /var/www/floodsense/deploy/nginx/floodsense.conf /etc/nginx/sites-available/floodsense
+sudo rm -f /etc/nginx/sites-enabled/default
+sudo ln -s /etc/nginx/sites-available/floodsense /etc/nginx/sites-enabled/floodsense
+sudo nginx -t
+sudo systemctl reload nginx
+```
+
+Install the included systemd service so FastAPI starts automatically and survives SSH logout and server restarts:
+
+```bash
+sudo cp /var/www/floodsense/deploy/systemd/floodsense-api.service /etc/systemd/system/floodsense-api.service
+sudo systemctl daemon-reload
+sudo systemctl enable --now floodsense-api
+sudo systemctl status floodsense-api
+```
+
+Verify the complete deployment:
+
+```bash
+curl http://127.0.0.1:8000/api/health
+curl http://127.0.0.1/api/health
+```
+
+Both commands should return `{"status":"ok"}`. Then open `http://SERVER_IP/`. Port `8000` should remain private; only ports `80` (and later `443` for HTTPS) need to be opened in the firewall.
+
+Useful diagnostics:
+
+```bash
+sudo journalctl -u floodsense-api -n 100 --no-pager
+sudo nginx -t
+```
+
+If the repository is installed somewhere other than `/var/www/floodsense`, change the paths in both deployment files before copying them into Nginx and systemd.
+
 On Windows, verify first that `py -3.10 --version` reports Python 3.10.x. Do not use the bare `python` command if it resolves to MSYS/MinGW. If `.venv` was previously created by that Python, delete that broken `.venv` directory and recreate it with `py -3.10 -m venv .venv`.
 
 ## Verification
