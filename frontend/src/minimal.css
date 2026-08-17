@@ -1,0 +1,22 @@
+header { grid-template-columns: 1fr auto; }
+.clock { justify-self: end; display: flex; align-items: center; gap: 9px; }
+.clock i { width: 8px; height: 8px; border-radius: 50%; background: #67736e; }
+.clock i.live { background: #df6045; animation: softblink 1.4s infinite; }
+.map-caption { transform: rotate(-2.2deg); padding: 8px 13px; }
+.legend { gap: 7px; padding: 7px 9px; transform: rotate(1.2deg); }
+.legend span { gap: 0; }
+.aside-head { justify-content: flex-end; }
+.asset-title { padding-top: 0; transform: rotate(-.35deg); }
+.risk-line { transform: translateX(3px) rotate(.25deg); }
+.instrument { transform: translateX(-2px); }
+.recommendation { margin-top: 20px; padding: 13px 15px; transform: rotate(-1deg); }
+.recommendation h2 { margin: 0 0 11px; }
+.recommendation button { padding: 9px 10px; }
+.impact { transform: rotate(1.2deg); }
+footer { grid-template-columns: 260px 64px 1fr; gap: 22px; }
+.weather label { font-size: 14px; }
+.play { width: 55px; height: 55px; font-size: 16px; transform: rotate(-1.5deg); }
+.failure-log { border: 0; padding-left: 0; justify-content: flex-start; }
+.failure-log div { min-width: 82px; }
+.failure-log p { border: 0; padding: 0; font-style: italic; }
+@media(max-width:850px){footer{grid-template-columns:1fr 60px}.failure-log{display:none}}

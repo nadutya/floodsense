@@ -1,0 +1,157 @@
+.sensor-stack { display: grid; gap: 9px; margin-top: 18px; }
+.telemetry,.vision-feed { position: relative; }
+.telemetry::before,.vision-feed::before { content: none; }
+.telemetry { min-height: 65px; margin: 0; padding: 7px 10px 5px; border: 0; background: #e4ece9; transform: none; }
+.telemetry code,.vision-feed code { font-size: 12px; }
+.telemetry b,.vision-feed b { font-size: 13px; }
+.telemetry svg { height: 25px; }
+.telemetry .sensor-grid { fill: none; stroke: #9eafab; stroke-width: .5; stroke-dasharray: 2 4; opacity: .42; vector-effect: non-scaling-stroke; }
+.telemetry circle { fill: #48778a; stroke: #f7f3e8; stroke-width: 1; vector-effect: non-scaling-stroke; }
+
+.vision-feed { min-height: 65px; padding: 11px 10px 10px; border: 0; background: #eee8d8; transform: none; }
+.vision-feed > div:first-child { display: flex; align-items: center; gap: 7px; }
+.vision-feed i { width: 7px; height: 7px; border-radius: 50%; background: #51836d; animation: camera-pulse 1.8s ease-in-out infinite; }
+.vision-feed code { color: #536762; font: 500 11px 'DM Mono', monospace; }
+.vision-feed b { margin-left: auto; color: var(--oxford-ink); font: 600 11px Manrope, Arial, sans-serif; }
+.vision-feed small { display: block; margin: 9px 0 0 14px; color: #66736e; font: 500 11px Manrope, Arial, sans-serif; }
+.vision-feed small strong { color: var(--oxford-ink); font: 600 11px 'DM Mono', monospace; }
+.vision-feed.restoring_connection i { background: #b37046; animation: camera-search .65s steps(2,end) infinite; }
+.vision-feed.restoring_connection b { color: #9b5d38; }
+@keyframes camera-pulse { 50% { opacity: .3; transform: scale(.72); } }
+@keyframes camera-search { 50% { opacity: .15; } }
+
+.instrument {
+  padding-top: 1px;
+  border: 0;
+}
+.instrument > div { padding-top: 5px; }
+.risk-line { border: 0; margin-top: 12px; padding-top: 8px; display: flex; align-items: baseline; gap: 7px; }
+.risk-line span { display: inline; margin: 0; color: #68746f; font: 500 11px Manrope, Arial, sans-serif; }
+.risk-line strong { display: inline; }
+
+.weather label { font-size: 16px; }
+.weather label b { font-size: 15px; }
+.weather input[type="range"] {
+  appearance: none;
+  -webkit-appearance: none;
+  display: block;
+  width: 100%;
+  height: 20px;
+  margin: 7px 0 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.weather input[type="range"]::-webkit-slider-runnable-track {
+  height: 3px;
+  background: #799197;
+}
+.weather input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  margin-top: -5.5px;
+  border: 2px solid #f7f3e8;
+  border-radius: 50%;
+  background: var(--oxford-ink);
+  box-shadow: 0 0 0 1px var(--oxford-ink);
+}
+.weather input[type="range"]::-moz-range-track { height: 3px; background: #799197; }
+.weather input[type="range"]::-moz-range-thumb { width: 12px; height: 12px; border: 2px solid #f7f3e8; border-radius: 50%; background: var(--oxford-ink); }
+
+.failure-log label { flex-basis: 145px; margin-right: 12px; }
+.failure-log p { font-size: 12px; }
+.failure-log { overflow-x: auto; overflow-y: hidden; scrollbar-width: thin; scrollbar-color: #829792 transparent; }
+.failure-log label { position: sticky; left: 0; z-index: 2; align-self: stretch; justify-content: center; background: #e4ebe8; }
+.failure-log div { flex: 0 0 88px; }
+.failure-log::-webkit-scrollbar { height: 5px; }
+.failure-log::-webkit-scrollbar-track { background: transparent; }
+.failure-log::-webkit-scrollbar-thumb { background: #829792; }
+.rain-canvas { filter: saturate(1.38) contrast(1.06); }
+
+/* Paired telemetry rows share one typographic scale. */
+.sensor-stack .telemetry code,
+.sensor-stack .vision-feed code {
+  font-size: 12px;
+  line-height: 1.2;
+  font-family: Manrope, Arial, sans-serif;
+  font-weight: 600;
+  letter-spacing: .025em;
+  font-variant-numeric: tabular-nums;
+}
+
+.sensor-stack .telemetry b,
+.sensor-stack .vision-feed b {
+  font-size: 13px;
+  line-height: 1.2;
+}
+.speed-controls { justify-self: center; display: flex; align-items: center; gap: 6px; padding: 3px 7px 4px; border-bottom: 1px solid rgba(216,185,87,.45); transform: rotate(-.35deg); }
+.speed-controls button { min-width: 34px; padding: 3px 2px; border: 0; color: #a9c0c5; background: transparent; font: 600 12px Georgia, serif; cursor: pointer; }
+.speed-controls button:hover { color: #f4ecda; }
+.speed-controls button.active { color: #f4ecda; background: rgba(216,185,87,.16); transform: rotate(.7deg); }
+
+/* The single drain the live model currently ranks first. */
+.priority-wave { fill: #e75f4317; stroke: #df563b; stroke-width: 3; opacity: 0; pointer-events: none; filter: drop-shadow(0 0 2px #fff4e8) drop-shadow(0 0 3px #c93f2a); }
+.svg-drain.priority .priority-wave { animation: priority-wave 1.45s ease-out infinite; }
+.svg-drain.priority .priority-wave-late { animation-delay: .48s; }
+.svg-drain.priority .drain-ring { stroke: #d84b34; stroke-width: 3; animation: priority-heartbeat .72s ease-in-out infinite alternate; }
+@keyframes priority-wave {
+  0% { r: 19; opacity: 1; }
+  84%, 100% { r: 62; opacity: 0; }
+}
+@keyframes priority-heartbeat { to { r: 23; filter: drop-shadow(0 0 9px #d84b34); } }
+
+@media (max-width: 850px) {
+  html, body, #root { min-height: 100%; }
+  body { overflow-x: hidden; overflow-y: auto; }
+  main { height: auto; min-height: 100dvh; grid-template-rows: 58px auto auto; }
+  header { position: sticky; top: 0; grid-template-columns: minmax(86px,1fr) auto auto; gap: 7px; height: 58px; padding: 0 11px; z-index: 20; }
+  .scene-title b { font-size: 17px; white-space: nowrap; }
+  .speed-controls { gap: 2px; padding-inline: 3px; transform: none; }
+  .speed-controls button { min-width: 31px; min-height: 34px; font-size: 12px; }
+  .clock { gap: 5px; white-space: nowrap; }
+  .clock b { font-size: 14px; }
+  .clock-face { display: none; }
+  .tour-help { width: 30px; height: 30px; margin-left: 2px; }
+
+  .workspace, .workspace.inspection-closed { display: grid; grid-template-columns: 1fr; grid-template-rows: min(58svh, 520px) auto; min-height: 0; }
+  .workspace.inspection-closed { grid-template-rows: min(68svh, 620px); }
+  .workspace .map-wrap, .workspace.inspection-closed .map-wrap { width: 100%; min-width: 0; border: 0; border-bottom: 2px solid #283b35; }
+  .map-caption { top: 12px; left: 12px; padding: 7px 10px; }
+  .legend { left: 10px; right: 52px; bottom: 10px; width: max-content; max-width: calc(100% - 70px); flex-wrap: wrap; gap: 7px 11px; padding: 7px 9px; font-size: 8px; }
+  .native-controls { right: 9px; bottom: 9px; }
+  .native-controls button { width: 38px; height: 38px; font-size: 19px; }
+  .native-tooltip { top: 58px; left: 12px; max-width: calc(100% - 24px); }
+
+  aside { width: 100%; overflow: visible; border: 0; }
+  .aside-head { position: sticky; top: 58px; height: 42px; padding: 0 14px; background: var(--paper, #faf8f0); z-index: 8; }
+  .aside-head button { width: 44px; height: 40px; font-size: 28px; }
+  .asset-title { padding: 8px 17px 15px; }
+  .asset-title h1 { font-size: 26px; }
+  .sensor-stack { grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; }
+  .telemetry, .vision-feed { min-width: 0; }
+  .sensor-stack .telemetry code, .sensor-stack .vision-feed code { font-size: 11px; }
+  .instrument, .risk-line { margin-inline: 17px; }
+  .recommendation, .impact { margin-inline: 17px; transform: none; }
+  .recommendation button { min-height: 46px; font-size: 12px; }
+
+  footer { position: static; display: grid; grid-template-columns: minmax(0,1fr) 58px; grid-template-rows: 82px 78px; gap: 0 12px; padding: 0 14px 8px; }
+  .weather { min-width: 0; }
+  .weather label { font-size: 12px; }
+  .weather label b { font-size: 13px; }
+  .weather input { height: 28px; margin-top: 6px; }
+  .play { width: 58px; min-height: 58px; align-self: center; }
+  .failure-log { display: flex !important; grid-column: 1 / -1; width: 100%; height: 70px; padding: 0; border-top: 1px solid #9dafae; overflow-x: auto; }
+  .failure-log label { flex: 0 0 112px; margin: 0; font-size: 13px; }
+  .failure-log div { flex: 0 0 82px; min-width: 82px; }
+  .failure-log p { white-space: nowrap; }
+}
+
+@media (max-width: 430px) {
+  header { grid-template-columns: 1fr auto; }
+  .speed-controls { position: absolute; left: 50%; top: 58px; transform: translateX(-50%); z-index: 21; padding: 3px 7px; background: #173b4a; border: 0; }
+  .workspace, .workspace.inspection-closed { padding-top: 38px; }
+  .workspace { grid-template-rows: min(54svh, 470px) auto; }
+  .sensor-stack { grid-template-columns: 1fr; }
+  .legend { right: 48px; }
+}

@@ -1,0 +1,7 @@
+export type Risk = 'normal'|'watch'|'high'|'critical'
+export interface Drain {id:string;name:string;lon:number;lat:number;blockage:number;asset:string|null}
+export interface DrainState {id:string;fill_pct:number;overflow_m3:number;water_level_cm:number;sensor_packet:number;sensor_id:string;camera_id:string;vision_blockage_pct:number;vision_confidence_pct:number;camera_status:'recording'|'restoring_connection';minutes_to_overflow:number|null;overflow_at_minute:number|null;blockage_pct:number;effective_capacity_lps:number;risk:Risk;priority_score:number}
+export interface Asset {id:string;name:string;kind:string;lon?:number;lat?:number;coordinates?:number[][]}
+export interface Recommendation {drain_id:string;action:string;reason:string;priority_score:number;requires_action:boolean}
+export interface Scenario {scenario:{rainfall_mmh:number;rainfall_schedule:{minute:number;rainfall_mmh:number}[];interventions:{drain_id:string;minute:number}[];duration_minutes:number;cleaned_drain_id:string|null;cleaning_minute:number};network:{meta:{synthetic:boolean;note:string};map:{center:number[]};drains:Drain[];assets:Asset[]};timeline:{minute:number;rainfall_mmh:number;drains:DrainState[];recommendation:Recommendation}[];recommendation:Recommendation;summary:{total_overflow_m3:number;first_overflow:DrainState|null}}
+export interface Comparison {baseline:Scenario;intervention:Scenario;impact:{prevented_overflow_m3:number;reduction_pct:number;protected_asset:string|null}}

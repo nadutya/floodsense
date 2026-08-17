@@ -1,0 +1,12 @@
+.tour-card { --card-w: min(380px, calc(100vw - 32px)); }
+.tour-card p { font-size: 14px; line-height: 1.5; }
+.tour-card.left { right: calc(100vw - var(--focus-left) + 20px); }
+.tour-card.map-note { left: 24px; top: 160px; }
+@media(max-width:750px){.tour-card.left{right:auto}}
+
+@media(max-width:750px){
+  .tour-card { --card-w: calc(100vw - 24px); max-height: min(46vh, 390px); overflow-y: auto; padding: 16px 16px 14px; }
+  .tour-card.right,.tour-card.left,.tour-card.above,.tour-card.map-note { left: 50%; right: auto; top: auto; bottom: max(12px, env(safe-area-inset-bottom)); transform: translateX(-50%); }
+  .tour-card p { font-size: 13px; line-height: 1.45; }
+  .tour-actions button { min-height: 40px; font-size: 11px; }
+}

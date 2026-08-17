@@ -1,0 +1,7 @@
+.map-wrap {
+  background: #e3e5df url('/oxford-fallback.svg') center / cover no-repeat;
+}
+
+.map {
+  background: transparent;
+}

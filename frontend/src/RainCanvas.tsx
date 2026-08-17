@@ -1,0 +1,30 @@
+import {useEffect,useRef} from 'react'
+
+type Drop={x:number;y:number;speed:number;length:number;alpha:number;impact:number;seed:number;depth:number}
+type Splash={x:number;y:number;age:number;life:number;size:number;tilt:number}
+
+export function RainCanvas({intensity,running,water}:{intensity:number;running:boolean;water:number}){
+ const ref=useRef<HTMLCanvasElement>(null)
+ const waterRef=useRef(water);waterRef.current=water
+ useEffect(()=>{const canvas=ref.current;if(!canvas)return;const ctx=canvas.getContext('2d');if(!ctx)return
+  let raf=0,last=performance.now(),width=1,height=1,splashes:Splash[]=[];const strength=Math.max(0,Math.min(1,intensity/70));const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches
+  let randomSeed=1701+Math.round(intensity*19);const random=()=>{randomSeed=(randomSeed*16807)%2147483647;return(randomSeed-1)/2147483646}
+  const count=intensity<=0?0:Math.round(16+strength*235)
+  const drops:Drop[]=Array.from({length:count},(_,i)=>{const depth=.35+random()*.9;return{x:random(),y:random(),speed:(130+strength*520+random()*170)*depth,length:(6+strength*18+random()*8)*depth,alpha:(.11+strength*.23+random()*.1)*depth,impact:.42+random()*.56,seed:i,depth}})
+  let lightningStarted=-Infinity,nextLightning=performance.now()+2500+random()*3500
+  const resize=()=>{const dpr=Math.min(devicePixelRatio||1,2);width=canvas.clientWidth;height=canvas.clientHeight;canvas.width=Math.round(width*dpr);canvas.height=Math.round(height*dpr);ctx.setTransform(dpr,0,0,dpr,0,0)};resize();addEventListener('resize',resize)
+  const reset=(d:Drop)=>{d.y=-d.length/Math.max(1,height);d.x=(d.x*.67+random()*.33)%1;d.impact=.42+random()*.56}
+  const waterShape=(time:number,offset=0)=>{const currentWater=waterRef.current,depth=Math.min(92,8+Math.sqrt(currentWater)*7),y=height-depth+offset;ctx.beginPath();ctx.moveTo(0,height);ctx.lineTo(0,y);for(let x=0;x<=width;x+=18){const wave=Math.sin(x*.032+time*.0011+offset)*2+Math.sin(x*.009-time*.0006)*1.4;ctx.lineTo(x,y+wave)}ctx.lineTo(width,height);ctx.closePath();return{depth,y}}
+  const drawWater=(time:number)=>{const currentWater=waterRef.current;if(currentWater<=0)return;const alpha=Math.min(.22,.045+currentWater/480);waterShape(time);ctx.fillStyle=`rgba(42,101,124,${alpha})`;ctx.fill();for(const offset of( [6,15] as number[])){waterShape(time,offset);ctx.strokeStyle=`rgba(79,133,149,${alpha*.72})`;ctx.lineWidth=.7;ctx.stroke()}
+   if(currentWater>4){ctx.strokeStyle=`rgba(37,94,115,${Math.min(.16,.025+currentWater/720)})`;ctx.lineWidth=1;for(let i=0;i<4;i++){const start=(width*(.13+i*.23)+(time*.012*(i+1)))%(width+100)-50;ctx.beginPath();ctx.moveTo(start,height-42+i*7);ctx.bezierCurveTo(start+22,height-34+i*5,start+15,height-19,start+48,height-8);ctx.stroke()}}}
+  const drawLightning=(time:number)=>{if(!running||reduced||strength<.65)return;ctx.fillStyle=`rgba(15,38,53,${.055+(strength-.65)*.16})`;ctx.fillRect(0,0,width,height);if(time>=nextLightning){lightningStarted=time;nextLightning=time+5000+random()*5000}const phase=time-lightningStarted,flash=phase<220?1-phase/220:phase>310&&phase<520?.72*(1-(phase-310)/210):0;if(flash<=0)return;ctx.fillStyle=`rgba(205,234,240,${flash*.58})`;ctx.fillRect(0,0,width,height);if(phase<220){const strike=(Math.floor(lightningStarted/1000)*137%61)/100+.2,x=strike*width;ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x-11,height*.14);ctx.lineTo(x+6,height*.27);ctx.lineTo(x-9,height*.41);ctx.lineTo(x-3,height*.57);ctx.strokeStyle=`rgba(238,252,253,${.35+flash*.65})`;ctx.lineWidth=2.5;ctx.shadowColor='rgba(202,239,246,.9)';ctx.shadowBlur=9;ctx.stroke();ctx.shadowBlur=0;ctx.beginPath();ctx.moveTo(x+6,height*.27);ctx.lineTo(x+29,height*.34);ctx.lineTo(x+17,height*.43);ctx.strokeStyle=`rgba(228,248,250,${flash*.92})`;ctx.lineWidth=1.45;ctx.stroke()}}
+  const drawSplash=(s:Splash,p:number)=>{ctx.save();ctx.translate(s.x,s.y);ctx.rotate(s.tilt);ctx.strokeStyle=`rgba(35,88,109,${(1-p)*(.22+strength*.25)})`;ctx.lineWidth=.7+s.size*.025;ctx.beginPath();ctx.ellipse(0,0,s.size*(.25+p),s.size*(.06+p*.2),0,0,Math.PI*2);ctx.stroke();if(p<.42){const lift=(1-p/.42)*s.size*.55;ctx.beginPath();ctx.moveTo(-1,0);ctx.lineTo(-s.size*.35,-lift);ctx.moveTo(1,0);ctx.lineTo(s.size*.32,-lift*.82);ctx.moveTo(0,-1);ctx.lineTo(s.size*.05,-lift*1.15);ctx.stroke()}ctx.restore()}
+  const draw=(now:number)=>{const dt=Math.min(.035,(now-last)/1000);last=now;ctx.clearRect(0,0,width,height);drawWater(now);const gust=(Math.sin(now*.00038)+Math.sin(now*.00107)*.45)*(.15+strength*.55),lean=.35+strength*.65+gust
+   if(running&&intensity>0){ctx.lineCap='round';for(const d of drops){if(!reduced){d.y+=d.speed*dt/height;d.x-=gust*dt/Math.max(width,1)*d.depth}if(d.x<-.04)d.x=1.04;if(d.x>1.04)d.x=-.04;const x=d.x*width,y=d.y*height,dx=(d.length*.035+lean)*d.depth;ctx.beginPath();ctx.moveTo(x,y);ctx.lineTo(x-dx,y+d.length);ctx.strokeStyle=`rgba(30,75,96,${Math.min(.48,d.alpha)})`;ctx.lineWidth=.45+d.depth*(.35+strength*.55);ctx.stroke();if(d.depth>1.05&&strength>.35){ctx.beginPath();ctx.moveTo(x+1.5,y-3);ctx.lineTo(x-dx*.9+1.5,y+d.length*.82);ctx.strokeStyle=`rgba(122,161,170,${d.alpha*.28})`;ctx.lineWidth=.45;ctx.stroke()}
+     const impactY=d.impact*height;if(y+d.length>=impactY){const divisor=Math.max(1,Math.round(8-strength*6));if(strength>.1&&splashes.length<60&&d.seed%divisor===0)splashes.push({x:x-dx,y:impactY,age:0,life:.42+strength*.35,size:(4+strength*9)*d.depth,tilt:(random()-.5)*.25});reset(d)}}
+    if(strength>.66){const band=((now*.055)%(width+320))-160;ctx.save();ctx.translate(band,0);ctx.rotate(-.035);ctx.fillStyle=`rgba(53,91,105,${.018+strength*.018})`;ctx.fillRect(-45,-80,120,height+160);ctx.restore()}}
+   splashes=splashes.filter(s=>{if(running&&!reduced)s.age+=dt;if(s.age>=s.life)return false;drawSplash(s,s.age/s.life);return true});drawLightning(now);raf=requestAnimationFrame(draw)}
+  raf=requestAnimationFrame(draw);return()=>{cancelAnimationFrame(raf);removeEventListener('resize',resize)}
+ },[intensity,running])
+ return <canvas className="rain-canvas" ref={ref} aria-hidden="true"/>
+}

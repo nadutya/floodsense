@@ -1,0 +1,61 @@
+.scene-title { align-items: baseline; gap: 12px; }
+.scene-title b { font-size: 20px; font-weight: 600; }
+.scene-title span { color: #a9c0c5; font: italic 11px Georgia, serif; }
+
+.clock { gap: 7px; }
+.clock b { color: #f1e9d7; font: 500 15px 'DM Mono', monospace; }
+.clock span { display: inline; color: #a9c0c5; font: 400 10px Manrope, Arial, sans-serif; }
+.clock i.clock-face { position: relative; width: 15px; height: 15px; border: 1px solid #aec3c7; border-radius: 50%; background: transparent; animation: none; }
+.clock i.clock-face::before { content: ''; position: absolute; left: 7px; top: 3px; width: 1px; height: 5px; background: #aec3c7; transform: rotate(-28deg); transform-origin: bottom; }
+.clock i.clock-face::after { content: ''; position: absolute; left: 7px; top: 7px; width: 4px; height: 1px; background: #aec3c7; transform: rotate(18deg); transform-origin: left; }
+
+.aside-head { height: 30px; }
+.aside-head button { font: 300 24px/1 Georgia, serif; }
+.asset-title { padding: 2px 22px 19px; }
+.asset-title small { font-size: 12px; letter-spacing: .06em; }
+.asset-title h1 { max-width: 250px; margin-top: 9px; font-size: 28px; line-height: 1.02; }
+.telemetry { margin-top: 13px; border-block: 1px solid #aebbb7; padding: 7px 0 5px; }
+.telemetry > div { display: flex; align-items: center; gap: 6px; }
+.telemetry i { width: 5px; height: 5px; border-radius: 50%; background: #4f866f; }
+.telemetry code { color: #536762; font: 500 11px 'DM Mono', monospace; }
+.telemetry b { margin-left: auto; color: var(--oxford-ink); font: 600 15px 'DM Mono', monospace; }
+.telemetry svg { display: block; width: 100%; height: 29px; margin-top: 3px; overflow: visible; }
+.telemetry polyline { fill: none; stroke: #48778a; stroke-width: 1.4; vector-effect: non-scaling-stroke; }
+
+.risk-line {
+  min-height: 52px;
+  display: block;
+  padding: 12px 0 11px;
+}
+.risk-line strong { display: block; font-size: 22px; font-weight: 600; color: var(--risk); }
+.risk-line span { display: block; margin-top: 3px; color: #66736e; font: 400 10px/1.35 Manrope, Arial, sans-serif; }
+
+.instrument { display: block; padding: 10px 0 7px; }
+.instrument > div { padding: 8px 0 10px; }
+.instrument > div + div { border: 0; }
+.instrument label { display: flex; align-items: baseline; gap: 5px; margin-bottom: 7px; color: #65716c; font: 400 10px Manrope, Arial, sans-serif; }
+.instrument label b { display: inline; margin: 0; color: var(--oxford-ink); font: 600 16px Georgia, serif; }
+.instrument meter { height: 3px; }
+
+.recommendation { margin-top: 17px; }
+.recommendation h2 { font-size: 17px; font-weight: 600; }
+.recommendation > p { margin: 0; color: #5d6449; font: italic 11px Georgia, serif; }
+.recommendation button { display: flex; align-items: center; gap: 8px; }
+.recommendation button > span { flex: 1; }
+.crew-icon { width: 28px; height: 17px; overflow: visible; transition: transform .2s ease; }
+.crew-icon path { fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linejoin: round; }
+.crew-icon circle { fill: var(--oxford-ink); stroke: none; }
+.recommendation button:hover .crew-icon { transform: translateX(3px); }
+.recommendation button:hover .crew-icon circle { fill: white; }
+
+.failure-log { gap: 0; }
+.failure-log label { flex: 0 0 118px; display: flex; flex-direction: column; gap: 4px; font-size: 14px; }
+.failure-log label small { width: 132px; color: #73807b; font: 400 8px/1.25 Manrope, Arial, sans-serif; }
+.failure-log div { flex: 1 1 0; min-width: 0; padding-inline: 11px; white-space: nowrap; }
+.failure-log div b { font-size: 12px; }
+.failure-log div span { font-size: 11px; }
+.drain-id { font-size: 13px; font-weight: 700; stroke-width: 6; }
+.drain-eta { font-size: 10px; stroke-width: 5; }
+.native-controls { z-index: 5; pointer-events: auto; }
+
+@media(max-width:850px){.scene-title span{display:none}.clock span{display:inline}.asset-title h1{font-size:24px}}

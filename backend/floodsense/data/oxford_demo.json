@@ -1,0 +1,23 @@
+{
+  "meta": {
+    "name": "Oxford West End demonstration network",
+    "synthetic": true,
+    "note": "Illustrative assets calibrated for a product demonstration; not field measurements."
+  },
+  "map": {"center": [-1.2625, 51.7514], "bounds": [[-1.274, 51.746], [-1.251, 51.757]]},
+  "assets": [
+    {"id":"CLINIC-01","name":"Beaumont Street Clinic","kind":"clinic","lon":-1.2612,"lat":51.7532,"priority":1.0},
+    {"id":"SCHOOL-01","name":"Westgate Community School","kind":"school","lon":-1.2677,"lat":51.7493,"priority":0.75},
+    {"id":"ROUTE-01","name":"Emergency access route","kind":"route","priority":0.95,"coordinates":[[-1.2708,51.7495],[-1.2650,51.7508],[-1.2612,51.7532]]}
+  ],
+  "drains": [
+    {"id":"OX-101","name":"Park End Street / West","lon":-1.2704,"lat":51.7496,"catchment_m2":1300,"storage_m3":5.7,"capacity_lps":37,"blockage":0.22,"runoff":0.84,"elevation_m":58.0,"downstream":"OX-103","asset":"SCHOOL-01"},
+    {"id":"OX-102","name":"Frideswide Square","lon":-1.2690,"lat":51.7510,"catchment_m2":1600,"storage_m3":6.0,"capacity_lps":43,"blockage":0.38,"runoff":0.88,"elevation_m":57.6,"downstream":"OX-103","asset":"ROUTE-01"},
+    {"id":"OX-103","name":"Hythe Bridge Street","lon":-1.2655,"lat":51.7517,"catchment_m2":1800,"storage_m3":7.2,"capacity_lps":52,"blockage":0.78,"runoff":0.91,"elevation_m":57.0,"downstream":"OX-105","asset":"CLINIC-01"},
+    {"id":"OX-104","name":"Worcester Street","lon":-1.2635,"lat":51.7520,"catchment_m2":1400,"storage_m3":5.4,"capacity_lps":39,"blockage":0.31,"runoff":0.86,"elevation_m":57.3,"downstream":"OX-105","asset":"CLINIC-01"},
+    {"id":"OX-105","name":"Beaumont Street","lon":-1.2614,"lat":51.7530,"catchment_m2":1750,"storage_m3":7.8,"capacity_lps":58,"blockage":0.47,"runoff":0.82,"elevation_m":56.8,"downstream":"OX-107","asset":"CLINIC-01"},
+    {"id":"OX-106","name":"St Giles' South","lon":-1.2601,"lat":51.7546,"catchment_m2":1150,"storage_m3":5.2,"capacity_lps":35,"blockage":0.18,"runoff":0.79,"elevation_m":57.4,"downstream":"OX-107","asset":null},
+    {"id":"OX-107","name":"Magdalen Street","lon":-1.2585,"lat":51.75225,"catchment_m2":1900,"storage_m3":8.4,"capacity_lps":64,"blockage":0.35,"runoff":0.90,"elevation_m":56.4,"downstream":null,"asset":"ROUTE-01"},
+    {"id":"OX-108","name":"George Street","lon":-1.2563,"lat":51.7524,"catchment_m2":2100,"storage_m3":6.8,"capacity_lps":41,"blockage":0.55,"runoff":0.87,"elevation_m":56.9,"downstream":"OX-107","asset":"ROUTE-01"}
+  ]
+}

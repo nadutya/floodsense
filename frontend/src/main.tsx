@@ -1,0 +1,2 @@
+import {StrictMode} from 'react';import{createRoot}from'react-dom/client';import'./style.css';import'./fallback.css';import'./map-native.css';import'./layout-fixes.css';import'./creative.css';import'./minimal.css';import'./rainy-oxford.css';import'./human.css';import'./polish.css';import'./tutorial.css';import'./tutorial-overrides.css';import{App}from'./App';
+createRoot(document.getElementById('root')!).render(<StrictMode><App/></StrictMode>)

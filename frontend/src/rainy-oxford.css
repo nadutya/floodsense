@@ -1,0 +1,100 @@
+:root {
+  --oxford-ink: #173b4a;
+  --storm-slate: #496572;
+  --rain-wash: #dce7e8;
+  --limestone: #eee8d8;
+  --paper: #f7f3e8;
+  --moss: #4f7668;
+  color: var(--oxford-ink);
+  background: var(--limestone);
+}
+
+main { background: var(--limestone); }
+
+header {
+  grid-template-columns: 1fr auto 1fr;
+  color: #f6f0df;
+  background: var(--oxford-ink);
+  border-bottom-color: #8da7ad;
+  position: relative;
+}
+
+header::after {
+  content: '';
+  position: absolute;
+  left: 24px;
+  bottom: -5px;
+  width: 112px;
+  height: 7px;
+  background: #d8b957;
+  transform: rotate(-1.5deg);
+}
+
+.scene-title b { color: #f6f0df; }
+.clock b { color: #d8e7e8; }
+.clock i { background: #8ba0a5; }
+.clock i.live { background: #79b8c4; }
+
+.map-wrap,
+.native-map { background-color: #dfe6e3; }
+
+.native-map::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: rgba(45, 86, 102, .07);
+  mix-blend-mode: multiply;
+}
+
+.map-caption {
+  color: var(--oxford-ink);
+  background: var(--paper);
+  border-bottom-color: #d8b957;
+}
+
+.route-note { color: #275b70; }
+.route-line { stroke: #2e6878; }
+
+.legend {
+  color: var(--oxford-ink);
+  background: rgba(247,243,232,.96);
+  border-color: var(--oxford-ink);
+  gap: 13px;
+  box-shadow: 3px 3px 0 rgba(23,59,74,.18);
+}
+
+.legend span { gap: 5px; white-space: nowrap; }
+
+aside { background: var(--paper); }
+.asset-title small { color: #b64f3f; }
+.asset-title h1 { color: var(--oxford-ink); }
+.risk-line { border-color: #aebcba; }
+meter::-webkit-meter-optimum-value { background: #467586; }
+
+.recommendation {
+  color: var(--oxford-ink);
+  background: #dfcf91;
+  box-shadow: 3px 3px 0 var(--oxford-ink);
+}
+
+.recommendation button { border-color: var(--oxford-ink); color: var(--oxford-ink); }
+.recommendation button:hover { background: var(--oxford-ink); color: white; }
+.impact { background: #cbded9; box-shadow-color: #356879; }
+
+footer {
+  color: var(--oxford-ink);
+  background: #e4ebE8;
+  border-top-color: var(--oxford-ink);
+}
+
+.play {
+  color: #f7f3e8;
+  background: var(--oxford-ink);
+  border-color: var(--oxford-ink);
+  box-shadow-color: #78949c;
+}
+
+.failure-log div { border-left-color: #9dafae; }
+.failure-log div span { color: #976144; }
+.native-controls button { color: var(--oxford-ink); background: var(--paper); }
