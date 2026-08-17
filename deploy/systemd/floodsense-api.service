@@ -1,0 +1,16 @@
+[Unit]
+Description=FloodSense FastAPI backend
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+Group=www-data
+WorkingDirectory=/var/www/floodsense
+Environment=PYTHONPATH=/var/www/floodsense/backend
+ExecStart=/var/www/floodsense/.venv/bin/python -m uvicorn floodsense.api:app --host 127.0.0.1 --port 8000
+Restart=on-failure
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target
